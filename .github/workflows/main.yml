@@ -1,4 +1,4 @@
-name: OctoDNS PowerDNS
+name: octoDNS {PROVIDER}
 on: [pull_request]
 
 jobs:

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
+from argparse import ArgumentParser
 from os import chmod, mkdir, stat, walk
 from os.path import dirname, join
-from pprint import pprint
 from sys import argv
 
 SPECIAL_HIDDEN = {
     '.git_hooks_pre-commit',
+    '.github',
     '.gitignore',
 }
 SPECIAL_IGNORE = {
@@ -15,17 +16,24 @@ SPECIAL_IGNORE = {
 
 source_dir = dirname(dirname(argv[0]))
 source_dir_len = len(source_dir) + 1
-print({
-    'source_dir': source_dir,
-})
 
 
-class options:
-    module = 'foo'
-    provider = 'FooProvider'
-    link = 'https://foo.com'
-    author = 'Ross McFarland'
-    author_email = 'rwmcfa1@gmail.com'
+parser = ArgumentParser(
+    description='Create a skeletal octoDNS module.'
+)
+parser.add_argument('--module', type=str, required=True,
+                    help='octoDNS module name, e.g. octodns_[something]')
+parser.add_argument('--provider', type=str, required=True,
+                    help='octoDNS provider name, e.g. [SomethingProvider]')
+parser.add_argument('--link', type=str, required=True,
+                    help='Link to information about the provider, e.g. '
+                    '[https://www.powerdns.com/]')
+parser.add_argument('--author', type=str, required=True,
+                    help="octoDNS module author's name, e.g. Ross McFarland")
+parser.add_argument('--author-email', type=str, required=True,
+                    help="octoDNS module author's email, e.g. "
+                    'rwmcfa1@gmail.com')
+options = parser.parse_args()
 
 
 def copy(source, target):
@@ -54,20 +62,16 @@ def copy(source, target):
 for root, dirs, files in walk(source_dir):
     target_dir = root[source_dir_len:] \
         .replace('MODULE', options.module)
-    pprint({
-        'root': root,
-        'target_dir': target_dir,
-    })
+    if target_dir.startswith('.') and not any([target_dir.startswith(s)
+                                               for s in SPECIAL_HIDDEN]):
+        continue
     for directory in dirs:
+        if directory.startswith('.') and directory not in SPECIAL_HIDDEN:
+            continue
         target = join(target_dir, directory) \
             .replace('MODULE', options.module)
         if target in SPECIAL_IGNORE:
             continue
-        pprint({
-            'root': root,
-            'dir': directory,
-            'target': target,
-        })
         mkdir(target)
     for file in files:
         if file.startswith('.') and file not in SPECIAL_HIDDEN:
@@ -76,10 +80,4 @@ for root, dirs, files in walk(source_dir):
         target = join(target_dir, file)
         if target in SPECIAL_IGNORE:
             continue
-        pprint({
-            'root': root,
-            'file': file,
-            'source': source,
-            'target': target,
-        })
         copy(source, target)
