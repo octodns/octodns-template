@@ -9,7 +9,7 @@ def descriptions():
 
 
 def version():
-    with open('octodns_{MODULE}/__init__.py') as fh:
+    with open('{MODULE}/__init__.py') as fh:
         for line in fh:
             if line.startswith('__VERSION__'):
                 return line.split("'")[1]
@@ -24,11 +24,11 @@ setup(
     license='MIT',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    name='octodns-{MODULE}',
-    packages=('octodns_{MODULE}',),
+    name='{MODULE_DASHED}',
+    packages=('{MODULE}',),
     python_requires='>=3.6',
     install_requires=('octodns>=0.9.14', 'TODO: other requirements'),
-    url='https://github.com/octodns/octodns-{MODULE}',
+    url='https://github.com/octodns/{MODULE_DASHED}',
     version=version(),
     tests_require=[
         'mock>=4.0.3',

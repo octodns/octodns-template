@@ -4,7 +4,7 @@
 
 from unittest import TestCase
 
-from octodns_{MODULE} import {PROVIDER}
+from {MODULE} import {PROVIDER}
 
 
 class Test{PROVIDER}(TestCase):

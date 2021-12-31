@@ -22,18 +22,22 @@ parser = ArgumentParser(
     description='Create a skeletal octoDNS module.'
 )
 parser.add_argument('--module', type=str, required=True,
-                    help='octoDNS module name, e.g. octodns_[something]')
+                    help='octoDNS module name, e.g. [octodns_something]')
 parser.add_argument('--provider', type=str, required=True,
                     help='octoDNS provider name, e.g. [SomethingProvider]')
+parser.add_argument('--name', type=str, required=True,
+                    help='Name of the provider/service, e.g. Something')
 parser.add_argument('--link', type=str, required=True,
                     help='Link to information about the provider, e.g. '
-                    '[https://www.powerdns.com/]')
+                    '[https://www.something.com/docs/api]')
 parser.add_argument('--author', type=str, required=True,
                     help="octoDNS module author's name, e.g. Ross McFarland")
 parser.add_argument('--author-email', type=str, required=True,
                     help="octoDNS module author's email, e.g. "
                     'rwmcfa1@gmail.com')
 options = parser.parse_args()
+options.module_dashed = options.module.replace('_', '-')
+options.module_stripped = options.module.replace('octodns_', '')
 
 
 def copy(source, target):
@@ -41,7 +45,10 @@ def copy(source, target):
     with open(source) as fh:
         contents = fh.read() \
             .replace('{MODULE}', options.module) \
+            .replace('{MODULE_DASHED}', options.module_dashed) \
+            .replace('{MODULE_STRIPPED}', options.module_stripped) \
             .replace('{PROVIDER}', options.provider) \
+            .replace('{NAME}', options.name) \
             .replace('{LINK}', options.link) \
             .replace('{AUTHOR}', options.author) \
             .replace('{AUTHOR_EMAIL}', options.author_email)

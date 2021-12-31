@@ -1,12 +1,13 @@
 ## HOW TO USE
 
 1. Clone this repo
-1. create your new module directory `mkdir octodns-MODULE`
-1. cd into that directory `cd octodns-MODULE`
+1. create your new module directory `mkdir MODULE`, generally something like "octodns-provider"
+1. cd into that directory `cd MODULE`
 1. Initialize git for the new directory `git init`
 1. run ../octodns-template/script/template to fill out the skeletal module structure
 1. Create an initial skeleton commit, `git add . && git commit -m "Import skeleton"`
 1. Find and work through all TODOs with `grep -r TODO .`, committing changes as makes sense
+1. If you're extracting a provider from octoDNS core, see https://github.com/octodns/octodns/pull/822 for an example of the changes that need to be made there
 1. ...
 
 {EOH}
@@ -15,14 +16,14 @@ TODO: Review this README and add or modify as necessary.
 
 ## {PROVIDER} provider for octoDNS
 
-An [octoDNS](https://github.com/octodns/octodns/) provider that targets [{PROVIDER}]({LINK}).
+An [octoDNS](https://github.com/octodns/octodns/) provider that targets [{NAME}]({LINK}).
 
 ### Installation
 
 #### Command line
 
 ```
-pip install octodns_{MODULE}
+pip install {MODULE}
 ```
 
 #### requirements.txt/setup.py
@@ -34,7 +35,7 @@ Pinning specific versions or SHAs is recommended to avoid unplanned upgrades.
 ```
 # Start with the latest versions and don't just copy what's here
 octodns==0.9.14
-octodns_{module}==0.0.1
+{MODULE}==0.0.1
 ```
 
 ##### SHAs
@@ -42,16 +43,16 @@ octodns_{module}==0.0.1
 ```
 # Start with the latest/specific versions and don't just copy what's here
 -e git+https://git@github.com/octodns/octodns.git@9da19749e28f68407a1c246dfdf65663cdc1c422#egg=octodns
--e git+https://git@github.com/octodns/octodns-{MODULE}.git@ec9661f8b335241ae4746eea467a8509205e6a30#egg=octodns_powerdns
+-e git+https://git@github.com/octodns/{MODULE}.git@ec9661f8b335241ae4746eea467a8509205e6a30#egg=octodns_powerdns
 ```
 
 ### Configuration
 
 ```yaml
 providers:
-  {module}:
-      class: octodns_{MODULE}.{PROVDER}
-      # TODO
+  {MODULE_STRIPPED}:
+    class: {MODULE}.{PROVIDER}
+    # TODO
 ```
 
 ### Support Information
