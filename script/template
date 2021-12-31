@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+
+from os import chmod, mkdir, stat, walk
+from os.path import dirname, join
+from pprint import pprint
+from sys import argv
+
+SPECIAL_HIDDEN = {
+    '.git_hooks_pre-commit',
+    '.gitignore',
+}
+SPECIAL_IGNORE = {
+    'script/template',
+}
+
+source_dir = dirname(dirname(argv[0]))
+source_dir_len = len(source_dir) + 1
+print({
+    'source_dir': source_dir,
+})
+
+
+class options:
+    module = 'foo'
+    provider = 'FooProvider'
+    link = 'https://foo.com'
+    author = 'Ross McFarland'
+    author_email = 'rwmcfa1@gmail.com'
+
+
+def copy(source, target):
+    # Pull in contents and do simple templating
+    with open(source) as fh:
+        contents = fh.read() \
+            .replace('{MODULE}', options.module) \
+            .replace('{PROVIDER}', options.provider) \
+            .replace('{LINK}', options.link) \
+            .replace('{AUTHOR}', options.author) \
+            .replace('{AUTHOR_EMAIL}', options.author_email)
+        # If there's a header skip to its end marker
+        try:
+            index = contents.index('{EOH}')
+            contents = contents[index+7:]
+        except ValueError:
+            pass
+    # Write out templated contents
+    with open(target, 'w') as fh:
+        fh.write(contents)
+    # Preserve permissions
+    st = stat(source)
+    chmod(target, st.st_mode)
+
+
+for root, dirs, files in walk(source_dir):
+    target_dir = root[source_dir_len:] \
+        .replace('MODULE', options.module)
+    pprint({
+        'root': root,
+        'target_dir': target_dir,
+    })
+    for directory in dirs:
+        target = join(target_dir, directory) \
+            .replace('MODULE', options.module)
+        if target in SPECIAL_IGNORE:
+            continue
+        pprint({
+            'root': root,
+            'dir': directory,
+            'target': target,
+        })
+        mkdir(target)
+    for file in files:
+        if file.startswith('.') and file not in SPECIAL_HIDDEN:
+            continue
+        source = join(root, file)
+        target = join(target_dir, file)
+        if target in SPECIAL_IGNORE:
+            continue
+        pprint({
+            'root': root,
+            'file': file,
+            'source': source,
+            'target': target,
+        })
+        copy(source, target)
