@@ -14,7 +14,7 @@
 
 TODO: Review this README and add or modify as necessary.
 
-## {PROVIDER} provider for octoDNS
+## {NAME} provider for octoDNS
 
 An [octoDNS](https://github.com/octodns/octodns/) provider that targets [{NAME}]({LINK}).
 
