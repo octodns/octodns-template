@@ -30,10 +30,9 @@ setup(
     install_requires=('octodns>=0.9.14', 'TODO: other requirements'),
     url='https://github.com/octodns/{MODULE_DASHED}',
     version=version(),
-    tests_require=[
-        'mock>=4.0.3',
+    tests_require=(
         'nose',
         'nose-no-network',
         'TODO: other test-time requirements'
-    ],
+    ),
 )
