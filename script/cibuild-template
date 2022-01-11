@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
 
-DIR=$(mktemp -d -t octodns-template)
+DIR=$(mktemp -d)
 echo "## paths #######################################################################"
 echo "root: $ROOT"
 echo "tempdir: $DIR"
