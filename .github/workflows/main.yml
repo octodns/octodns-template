@@ -17,4 +17,4 @@ jobs:
           architecture: x64
       - name: CI Build
         run: |
-          ./script/cibuild
+          ./script/cibuild-template

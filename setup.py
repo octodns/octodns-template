@@ -27,12 +27,15 @@ setup(
     name='{MODULE_DASHED}',
     packages=find_packages(),
     python_requires='>=3.6',
-    install_requires=('octodns>=0.9.14', 'TODO: other requirements'),
+    install_requires=(
+        'octodns>=0.9.14',
+        # TODO: other requirements
+    ),
     url='https://github.com/octodns/{MODULE_DASHED}',
     version=version(),
     tests_require=(
         'nose',
         'nose-no-network',
-        'TODO: other test-time requirements'
+        # TODO: other test-time requirements
     ),
 )

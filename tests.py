@@ -9,4 +9,4 @@ from {MODULE} import {PROVIDER}
 
 class Test{PROVIDER}(TestCase):
     # TODO: test provider
-    pass
+    {PROVIDER}

@@ -11,6 +11,8 @@ SPECIAL_HIDDEN = {
     '.gitignore',
 }
 SPECIAL_IGNORE = {
+    'env',
+    'script/cibuild-template',
     'script/build-requirements',
     'script/template',
 }
@@ -52,7 +54,9 @@ def copy(source, target):
             .replace('{NAME}', options.name) \
             .replace('{LINK}', options.link) \
             .replace('{AUTHOR}', options.author) \
-            .replace('{AUTHOR_EMAIL}', options.author_email)
+            .replace('{AUTHOR_EMAIL}', options.author_email) \
+            .replace('./script/cibuild-template', './script/cibuild')
+            # special case to switch from the template ci to the real one ^
         # If there's a header skip to its end marker
         try:
             index = contents.index('{EOH}')
@@ -69,7 +73,7 @@ def copy(source, target):
 
 for root, dirs, files in walk(source_dir):
     target_dir = root[source_dir_len:] \
-        .replace('MODULE', options.module)
+        .replace('{MODULE}', options.module)
     if target_dir.startswith('.') and not any([target_dir.startswith(s)
                                                for s in SPECIAL_HIDDEN]):
         continue
@@ -77,8 +81,8 @@ for root, dirs, files in walk(source_dir):
         if directory.startswith('.') and directory not in SPECIAL_HIDDEN:
             continue
         target = join(target_dir, directory) \
-            .replace('MODULE', options.module)
-        if target in SPECIAL_IGNORE:
+            .replace('{MODULE}', options.module)
+        if any([target.startswith(si) for si in SPECIAL_IGNORE]):
             continue
         mkdir(target)
     for file in files:
@@ -86,6 +90,6 @@ for root, dirs, files in walk(source_dir):
             continue
         source = join(root, file)
         target = join(target_dir, file)
-        if target in SPECIAL_IGNORE:
+        if any([target.startswith(si) for si in SPECIAL_IGNORE]):
             continue
         copy(source, target)
