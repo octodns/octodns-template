@@ -11,6 +11,7 @@ SPECIAL_HIDDEN = {
     '.gitignore',
 }
 SPECIAL_IGNORE = {
+    'script/build-requirements',
     'script/template',
 }
 
