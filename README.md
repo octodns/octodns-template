@@ -8,6 +8,15 @@
 1. Create an initial skeleton commit, `git add . && git commit -m "Import skeleton"`
 1. Find and work through all TODOs with `grep -r TODO .`, committing changes as makes sense
 1. If you're extracting a provider from octoDNS core, see https://github.com/octodns/octodns/pull/822 for an example of the changes that need to be made there
+1. The following steps can be used to get exhaustive pins in requirements.txt and requirements-dev.txt
+    1. Add the specific/known runtime requirements to `requirements.txt` and any dev-time requirements to `requirements-dev.txt`. These will likely match what's added to `setup.py`
+    1. `python3 -m venv env`
+    1. `source env/bin/activate`
+    1. `pip install -r requirements.txt`
+    1. `pip freeze | sort > requirements.txt`
+    1. `pip install -r requirements-dev.txt`
+    1. `pip freeze | sort > /tmp/all.txt`
+    1. `comm -13 requirements.txt /tmp/all.txt  | sort > requirements-dev.txt`
 1. ...
 
 {EOH}
