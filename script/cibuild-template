@@ -1,0 +1,27 @@
+#!/bin/sh
+
+set -e
+
+cd "$(dirname "$0")/.."
+ROOT=$(pwd)
+
+DIR=$(mktemp -d)
+echo "## paths #######################################################################"
+echo "root: $ROOT"
+echo "tempdir: $DIR"
+
+cd $DIR
+
+$ROOT/script/template \
+  --module octodns_testing \
+  --provider TestingProvider \
+  --name Testing \
+  --link https://github.com/octodns/ \
+  --author 'A. Tester' \
+  --author-email 'a.tester@octodns.org'
+
+echo "## files #######################################################################"
+find .
+
+# Now hand over to the templated cibuild
+./script/cibuild

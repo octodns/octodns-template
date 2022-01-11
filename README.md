@@ -8,13 +8,22 @@
 1. Create an initial skeleton commit, `git add . && git commit -m "Import skeleton"`
 1. Find and work through all TODOs with `grep -r TODO .`, committing changes as makes sense
 1. If you're extracting a provider from octoDNS core, see https://github.com/octodns/octodns/pull/822 for an example of the changes that need to be made there
+1. The following steps can be used to get exhaustive pins in requirements.txt and requirements-dev.txt
+    1. Add the specific/known runtime requirements to `requirements.txt` and any dev-time requirements to `requirements-dev.txt`. These will likely match what's added to `setup.py`
+    1. `python3 -m venv env`
+    1. `source env/bin/activate`
+    1. `pip install -r requirements.txt`
+    1. `pip freeze | sort > requirements.txt`
+    1. `pip install -r requirements-dev.txt`
+    1. `pip freeze | sort > /tmp/all.txt`
+    1. `comm -13 requirements.txt /tmp/all.txt  | sort > requirements-dev.txt`
 1. ...
 
 {EOH}
 
 TODO: Review this README and add or modify as necessary.
 
-## {PROVIDER} provider for octoDNS
+## {NAME} provider for octoDNS
 
 An [octoDNS](https://github.com/octodns/octodns/) provider that targets [{NAME}]({LINK}).
 
@@ -43,7 +52,7 @@ octodns==0.9.14
 ```
 # Start with the latest/specific versions and don't just copy what's here
 -e git+https://git@github.com/octodns/octodns.git@9da19749e28f68407a1c246dfdf65663cdc1c422#egg=octodns
--e git+https://git@github.com/octodns/{MODULE}.git@ec9661f8b335241ae4746eea467a8509205e6a30#egg=octodns_powerdns
+-e git+https://git@github.com/octodns/{MODULE}.git@ec9661f8b335241ae4746eea467a8509205e6a30#egg={MODULE}
 ```
 
 ### Configuration

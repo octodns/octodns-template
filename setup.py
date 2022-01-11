@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 
 def descriptions():
@@ -25,15 +25,17 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     name='{MODULE_DASHED}',
-    packages=('{MODULE}',),
+    packages=find_packages(),
     python_requires='>=3.6',
-    install_requires=('octodns>=0.9.14', 'TODO: other requirements'),
+    install_requires=(
+        'octodns>=0.9.14',
+        # TODO: other requirements
+    ),
     url='https://github.com/octodns/{MODULE_DASHED}',
     version=version(),
-    tests_require=[
-        'mock>=4.0.3',
+    tests_require=(
         'nose',
         'nose-no-network',
-        'TODO: other test-time requirements'
-    ],
+        # TODO: other test-time requirements
+    ),
 )
