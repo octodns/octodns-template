@@ -89,7 +89,8 @@ for root, dirs, files in walk(source_dir):
         if file.startswith('.') and file not in SPECIAL_HIDDEN:
             continue
         source = join(root, file)
-        target = join(target_dir, file)
+        target = join(target_dir, file) \
+            .replace('{MODULE}', options.module)
         if any([target.startswith(si) for si in SPECIAL_IGNORE]):
             continue
         copy(source, target)

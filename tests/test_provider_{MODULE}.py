@@ -8,5 +8,8 @@ from {MODULE} import {PROVIDER}
 
 
 class Test{PROVIDER}(TestCase):
+
     # TODO: test provider
-    {PROVIDER}
+    def test_nothing(self):
+        self.assertTrue(True)
+        {PROVIDER}
