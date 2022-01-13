@@ -13,9 +13,9 @@ echo "tempdir: $DIR"
 cd $DIR
 
 $ROOT/script/template \
-  --module octodns_testing \
-  --provider TestingProvider \
-  --name Testing \
+  --module octodns_stub \
+  --provider StubProvider \
+  --name 'Stub Provider Testing' \
   --link https://github.com/octodns/ \
   --author 'A. Tester' \
   --author-email 'a.tester@octodns.org'
