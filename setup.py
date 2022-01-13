@@ -34,8 +34,8 @@ setup(
     url='https://github.com/octodns/{MODULE_DASHED}',
     version=version(),
     tests_require=(
-        'nose',
-        'nose-no-network',
+        'pytest',
+        'pytest-network',
         # TODO: other test-time requirements
     ),
 )
