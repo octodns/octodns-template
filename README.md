@@ -1,7 +1,7 @@
 ## HOW TO USE
 
 1. Clone this repo
-1. create your new module directory `mkdir MODULE`, generally something like "octodns-provider"
+1. create your new module directory `mkdir MODULE`, generally something like "octodns_provider"
 1. cd into that directory `cd MODULE`
 1. Initialize git for the new directory `git init`
 1. run ../octodns-template/script/template to fill out the skeletal module structure
