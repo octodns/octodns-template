@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+MDIR=$(pwd)
+cd "$(dirname "$0")/.."
+ROOT=$(pwd)
+
+echo "## paths #######################################################################"
+echo "root: $ROOT"
+echo "moduledir: $MDIR"
+TDIR=$(mktemp -d)
+echo "tempdir: $TDIR"
+
+echo "## template vars ###############################################################"
+MODULE=$(basename "$MDIR" | sed 's/-/_/')
+echo "module: $MODULE"
+PROVIDER=$(grep '^class .*Provider(' "$MDIR/$MODULE/__init__.py" | sed -e 's/class //' -e 's/(.*//')
+echo "provider: $PROVIDER"
+NAME=$(head -n 1 $MDIR/README.md | sed -e 's/## //' -e 's/ provider.*//')
+echo "name: $NAME"
+LINK=$(grep 'provider that targets' $MDIR/README.md | sed -e 's/.*targets .*](//' -e 's/)\.$//' || echo "NoT-FoUnD")
+echo "link: $LINK"
+AUTHOR=$(grep 'author=' "$MDIR/setup.py" | sed -e "s/.*author='//" -e "s/',//")
+echo "author: $AUTHOR"
+AUTHOR_EMAIL=$(grep 'author_email=' "$MDIR/setup.py" | sed -e "s/.*author_email='//" -e "s/',//")
+echo "author_email: $AUTHOR_EMAIL"
+
+cd $TDIR
+
+$ROOT/script/template \
+  --module "$MODULE" \
+  --provider "$PROVIDER" \
+  --name "$NAME" \
+  --link "$LINK" \
+  --author "$AUTHOR" \
+  --author-email "$AUTHOR_EMAIL"
+
+diff -ru --ignore-matching-lines='TODO' --exclude=$MODULE --exclude=tests* . $MDIR
