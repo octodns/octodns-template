@@ -1,2 +1,1 @@
-octodns==0.9.14
-# TODO: add any other runtime requirements, these should be exhaustive and pinned
+# TODO: run ./script/update-requirements to fill this and requirements-dev.txt out
