@@ -13,7 +13,6 @@ SPECIAL_HIDDEN = {
 SPECIAL_IGNORE = {
     'env',
     'script/cibuild-template',
-    'script/build-requirements',
     'script/look-for-changes',
     'script/template',
 }
