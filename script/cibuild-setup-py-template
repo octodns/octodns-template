@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Nothing to see here"
+exit 0
