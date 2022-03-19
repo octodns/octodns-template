@@ -13,6 +13,7 @@ SPECIAL_HIDDEN = {
 SPECIAL_IGNORE = {
     'env',
     'script/cibuild-template',
+    'script/cibuild-setup-py-template',
     'script/look-for-changes',
     'script/template',
 }
@@ -56,6 +57,8 @@ def copy(source, target):
             .replace('{AUTHOR}', options.author) \
             .replace('{AUTHOR_EMAIL}', options.author_email) \
             .replace('./script/cibuild-template', './script/cibuild')
+            .replace('./script/cibuild-setup-py-template',
+                     './script/cibuild-setup-py')
             # special case to switch from the template ci to the real one ^
         # If there's a header skip to its end marker
         try:
