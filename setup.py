@@ -44,13 +44,14 @@ setup(
     author_email='{AUTHOR_EMAIL}',
     description=description,
     extras_require={
-        'dev': tests_require + (
+        'dev': tests_require
+        + (
+            'black>=22.3.0',
             'build>=0.7.0',
-            'pycodestyle>=2.6.0',
             'pyflakes>=2.2.0',
             'readme_renderer[md]>=26.0',
             'twine>=3.4.2',
-        ),
+        )
     },
     install_requires=(
         'octodns>=0.9.14',
