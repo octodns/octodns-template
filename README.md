@@ -1,8 +1,8 @@
 ## HOW TO USE
 
 1. Clone this repo
-1. create your new module directory `mkdir MODULE`, generally something like "octodns_provider"
-1. cd into that directory `cd MODULE`
+1. create your new module directory `mkdir <OCTODNS-PROVIDER>`
+1. cd into that directory `cd <OCTODNS-PROVIDER>`
 1. Initialize git for the new directory `git init`
 1. run ../octodns-template/script/template to fill out the skeletal module structure
 1. Create an initial skeleton commit, `git add . && git commit -m "Import skeleton"`
@@ -23,7 +23,7 @@ An [octoDNS](https://github.com/octodns/octodns/) provider that targets [{NAME}]
 #### Command line
 
 ```
-pip install {MODULE}
+pip install {MODULE_DASHED}
 ```
 
 #### requirements.txt/setup.py
@@ -35,7 +35,7 @@ Pinning specific versions or SHAs is recommended to avoid unplanned upgrades.
 ```
 # Start with the latest versions and don't just copy what's here
 octodns==0.9.14
-{MODULE}==0.0.1
+{MODULE_DASHED}==0.0.1
 ```
 
 ##### SHAs
