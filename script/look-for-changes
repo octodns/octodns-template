@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# ([[ `git status --porcelain` ]] && echo "local changes" && exit 1 || exit 0) && (test $(git rev-parse --abbrev-ref HEAD) != "main" && echo "on branch" && exit 1 || exit 0) && ~/octodns/octodns-template/script/look-for-changes 2>&1 | tee /tmp/changes.patch
+#
+# ~/octodns/octodns-template/script/look-for-changes 2>&1 | tee /tmp/changes.patch
+#
+# ./script/format && git checkout -b general-updates && git add -p && git commit -m "Updates to latest template" && ./script/update-requirements && git add -p && git commit -m "Update requirements files" && git pob
+#
+# hub pull-request --file /tmp/body.txt -b main -h general-updates -a ross
+
 set -e
 set -o pipefail
 
