@@ -16,6 +16,7 @@ SPECIAL_IGNORE = {
     'script/cibuild-setup-py-template',
     'script/look-for-changes',
     'script/template',
+    'tmp',
 }
 
 source_dir = dirname(dirname(argv[0]))
