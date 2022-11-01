@@ -16,6 +16,7 @@ SPECIAL_IGNORE = {
     'script/cibuild-setup-py-template',
     'script/look-for-changes',
     'script/template',
+    'script/update-requirements-template',
     'tmp',
 }
 
