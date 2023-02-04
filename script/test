@@ -17,6 +17,4 @@ fi
 # TODO: ensure any common env var secrets have been cleared
 export TODO_ACCESS_KEY_ID=
 
-export PYTHONPATH=.:$PYTHONPATH
-
 pytest --disable-network "$@"
