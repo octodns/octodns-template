@@ -15,6 +15,6 @@ if [ ! -f "$ACTIVATE" ]; then
 fi
 . "$ACTIVATE"
 
-SOURCES="{MODULE}/*.py setup.py tests/*.py"
+SOURCES="$(find *.py {MODULE} tests -name "*.py") $(grep --files-with-matches '^#!.*python' script/*)"
 
 pyflakes $SOURCES

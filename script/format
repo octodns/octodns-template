@@ -2,7 +2,7 @@
 
 set -e
 
-SOURCES=$(find *.py octodns_* tests -name "*.py")
+SOURCES="$(find *.py {MODULE} tests -name "*.py") $(grep --files-with-matches '^#!.*python' script/*)"
 
 . env/bin/activate
 
