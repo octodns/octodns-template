@@ -49,7 +49,7 @@ setup(
         + (
             'black>=22.3.0',
             'build>=0.7.0',
-            'isort>=5.11.4',
+            'isort==5.11.5',
             'pyflakes>=2.2.0',
             'readme_renderer[md]>=26.0',
             'twine>=3.4.2',

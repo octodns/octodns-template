@@ -24,6 +24,7 @@ with TemporaryDirectory() as tmpdir:
     pkgs = [
         'black',
         'build',
+        'isort',
         'pyflakes',
         'pytest',
         'pytest-cov',
