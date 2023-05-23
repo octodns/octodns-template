@@ -5,11 +5,7 @@ from os import chmod, mkdir, stat, walk
 from os.path import dirname, join
 from sys import argv
 
-SPECIAL_HIDDEN = {
-    '.git_hooks_pre-commit',
-    '.github',
-    '.gitignore',
-}
+SPECIAL_HIDDEN = {'.git_hooks_pre-commit', '.github', '.gitignore'}
 SPECIAL_IGNORE = {
     'env',
     'script/cibuild-template',
@@ -24,23 +20,44 @@ source_dir = dirname(dirname(argv[0]))
 source_dir_len = len(source_dir) + 1
 
 
-parser = ArgumentParser(
-    description='Create a skeletal octoDNS module.'
+parser = ArgumentParser(description='Create a skeletal octoDNS module.')
+parser.add_argument(
+    '--module',
+    type=str,
+    required=True,
+    help='octoDNS module name, e.g. [octodns_something]',
 )
-parser.add_argument('--module', type=str, required=True,
-                    help='octoDNS module name, e.g. [octodns_something]')
-parser.add_argument('--provider', type=str, required=True,
-                    help='octoDNS provider name, e.g. [SomethingProvider]')
-parser.add_argument('--name', type=str, required=True,
-                    help='Name of the provider/service, e.g. Something')
-parser.add_argument('--link', type=str, required=True,
-                    help='Link to information about the provider, e.g. '
-                    '[https://www.something.com/docs/api]')
-parser.add_argument('--author', type=str, required=True,
-                    help="octoDNS module author's name, e.g. Ross McFarland")
-parser.add_argument('--author-email', type=str, required=True,
-                    help="octoDNS module author's email, e.g. "
-                    'rwmcfa1@gmail.com')
+parser.add_argument(
+    '--provider',
+    type=str,
+    required=True,
+    help='octoDNS provider name, e.g. [SomethingProvider]',
+)
+parser.add_argument(
+    '--name',
+    type=str,
+    required=True,
+    help='Name of the provider/service, e.g. Something',
+)
+parser.add_argument(
+    '--link',
+    type=str,
+    required=True,
+    help='Link to information about the provider, e.g. '
+    '[https://www.something.com/docs/api]',
+)
+parser.add_argument(
+    '--author',
+    type=str,
+    required=True,
+    help="octoDNS module author's name, e.g. Ross McFarland",
+)
+parser.add_argument(
+    '--author-email',
+    type=str,
+    required=True,
+    help="octoDNS module author's email, e.g. " 'rwmcfa1@gmail.com',
+)
 options = parser.parse_args()
 options.module_dashed = options.module.replace('_', '-')
 options.module_stripped = options.module.replace('octodns_', '')
@@ -49,23 +66,27 @@ options.module_stripped = options.module.replace('octodns_', '')
 def copy(source, target):
     # Pull in contents and do simple templating
     with open(source) as fh:
-        contents = fh.read() \
-            .replace('{MODULE}', options.module) \
-            .replace('{MODULE_DASHED}', options.module_dashed) \
-            .replace('{MODULE_STRIPPED}', options.module_stripped) \
-            .replace('{PROVIDER}', options.provider) \
-            .replace('{NAME}', options.name) \
-            .replace('{LINK}', options.link) \
-            .replace('{AUTHOR}', options.author) \
-            .replace('{AUTHOR_EMAIL}', options.author_email) \
-            .replace('./script/cibuild-template', './script/cibuild') \
-            .replace('./script/cibuild-setup-py-template',
-                     './script/cibuild-setup-py')
-            # special case to switch from the template ci to the real one ^
+        contents = (
+            fh.read()
+            .replace('{MODULE}', options.module)
+            .replace('{MODULE_DASHED}', options.module_dashed)
+            .replace('{MODULE_STRIPPED}', options.module_stripped)
+            .replace('{PROVIDER}', options.provider)
+            .replace('{NAME}', options.name)
+            .replace('{LINK}', options.link)
+            .replace('{AUTHOR}', options.author)
+            .replace('{AUTHOR_EMAIL}', options.author_email)
+            .replace('./script/cibuild-template', './script/cibuild')
+            .replace(
+                './script/cibuild-setup-py-template',
+                './script/cibuild-setup-py',
+            )
+        )
+        # special case to switch from the template ci to the real one ^
         # If there's a header skip to its end marker
         try:
             index = contents.index('{EOH}')
-            contents = contents[index+7:]
+            contents = contents[index + 7 :]
         except ValueError:
             pass
     # Write out templated contents
@@ -77,16 +98,15 @@ def copy(source, target):
 
 
 for root, dirs, files in walk(source_dir):
-    target_dir = root[source_dir_len:] \
-        .replace('{MODULE}', options.module)
-    if target_dir.startswith('.') and not any([target_dir.startswith(s)
-                                               for s in SPECIAL_HIDDEN]):
+    target_dir = root[source_dir_len:].replace('{MODULE}', options.module)
+    if target_dir.startswith('.') and not any(
+        [target_dir.startswith(s) for s in SPECIAL_HIDDEN]
+    ):
         continue
     for directory in dirs:
         if directory.startswith('.') and directory not in SPECIAL_HIDDEN:
             continue
-        target = join(target_dir, directory) \
-            .replace('{MODULE}', options.module)
+        target = join(target_dir, directory).replace('{MODULE}', options.module)
         if any([target.startswith(si) for si in SPECIAL_IGNORE]):
             continue
         mkdir(target)
@@ -94,8 +114,7 @@ for root, dirs, files in walk(source_dir):
         if file.startswith('.') and file not in SPECIAL_HIDDEN:
             continue
         source = join(root, file)
-        target = join(target_dir, file) \
-            .replace('{MODULE}', options.module)
+        target = join(target_dir, file).replace('{MODULE}', options.module)
         if any([target.startswith(si) for si in SPECIAL_IGNORE]):
             continue
         copy(source, target)

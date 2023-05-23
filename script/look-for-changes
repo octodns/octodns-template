@@ -24,7 +24,7 @@ echo "tempdir: $TDIR"
 echo "## template vars ###############################################################"
 MODULE=$(basename "$MDIR" | sed 's/-/_/')
 echo "module: $MODULE"
-PROVIDER=$(grep -r '^class .*\(Provider\|Source\)(' "$MDIR/$MODULE/" | sed -e 's/class //' -e 's/(.*//')
+PROVIDER=$(grep --no-filename -r '^class .*\(Provider\|Source\)(' "$MDIR/$MODULE/" | sed -e 's/class //' -e 's/(.*//')
 echo "provider: $PROVIDER"
 NAME=$(head -n 1 $MDIR/README.md | sed -e 's/## //' -e 's/ provider.*//')
 echo "name: $NAME"
