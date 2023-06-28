@@ -22,15 +22,17 @@ with TemporaryDirectory() as tmpdir:
 
     # dev additions, these need to be kept in sync with setup.py
     pkgs = [
-        'black',
-        'build',
-        'isort',
-        'pyflakes',
+        # tests_require
         'pytest',
         'pytest-cov',
         'pytest-network',
-        'readme_renderer[md]',
-        'twine',
+        # extra dev stuff
+        'black>=23.1.0,<24.0.0',
+        'build>=0.7.0',
+        'isort>=5.11.5',
+        'pyflakes>=2.2.0',
+        'readme_renderer[md]>=26.0',
+        'twine>=3.4.2',
     ]
     check_call([join(tmpdir, 'bin', 'pip'), 'install', *pkgs])
     dev_frozen = check_output([join(tmpdir, 'bin', 'pip'), 'freeze'])
