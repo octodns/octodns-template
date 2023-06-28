@@ -22,6 +22,11 @@ with TemporaryDirectory() as tmpdir:
 
     # dev additions, these need to be kept in sync with setup.py
     pkgs = [
+        # tests_require
+        'pytest',
+        'pytest-cov',
+        'pytest-network',
+        # extra dev stuff
         'black>=23.1.0,<24.0.0',
         'build>=0.7.0',
         'isort>=5.11.5',
