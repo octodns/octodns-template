@@ -61,7 +61,7 @@ setup(
         'test': tests_require,
     },
     install_requires=(
-        'octodns>=0.9.14',
+        'octodns>=1.0.0',
         # TODO: other requirements
     ),
     license='MIT',
