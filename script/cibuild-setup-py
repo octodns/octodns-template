@@ -18,6 +18,6 @@ python -m build --sdist --wheel
 echo "## validate wheel install ###################################################"
 pip install dist/*$VERSION*.whl
 echo "## validate tests can run against installed code ###############################"
-pip install pytest pytest-network
+pip install -r requirements-dev.txt
 pytest --disable-network
 echo "## complete ####################################################################"
