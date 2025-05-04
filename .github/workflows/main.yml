@@ -1,5 +1,7 @@
 name: octoDNS {PROVIDER}
-on: [pull_request, workflow_dispatch]
+on:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   config:
