@@ -8,6 +8,7 @@ from sys import argv
 SPECIAL_HIDDEN = {'.git_hooks_pre-commit', '.github', '.gitignore'}
 SPECIAL_IGNORE = {
     'env',
+    'script/changelog-template',
     'script/cibuild-template',
     'script/cibuild-setup-py-template',
     'script/look-for-changes',
@@ -76,6 +77,7 @@ def copy(source, target):
             .replace('{LINK}', options.link)
             .replace('{AUTHOR}', options.author)
             .replace('{AUTHOR_EMAIL}', options.author_email)
+            .replace('./script/changelog-template', './script/changelog')
             .replace('./script/cibuild-template', './script/cibuild')
             .replace(
                 './script/cibuild-setup-py-template',
