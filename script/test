@@ -1,20 +1,8 @@
 #!/bin/sh
-set -e
 
-cd "$(dirname "$0")/.."
-
-if [ -z "$VENV_NAME" ]; then
-    VENV_NAME="env"
-fi
-
-ACTIVATE="$VENV_NAME/bin/activate"
-if [ ! -f "$ACTIVATE" ]; then
-    echo "$ACTIVATE does not exist, run ./script/bootstrap" >&2
-    exit 1
-fi
-. "$ACTIVATE"
-
-# TODO: ensure any common env var secrets have been cleared
-export TODO_ACCESS_KEY_ID=
+# Get current script path
+SCRIPT_PATH="$( dirname -- "$( readlink -f -- "${0}"; )"; )"
+# Activate OctoDNS Python venv
+source "${SCRIPT_PATH}/common.sh"
 
 pytest --disable-network "$@"

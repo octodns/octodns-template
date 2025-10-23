@@ -9,4 +9,4 @@ dist/
 env/
 htmlcov/
 nosetests.xml
-{MODULE}_*.egg-info/
+{MODULE}*.egg-info/
