@@ -1,16 +1,12 @@
 #!/bin/sh
-set -e
-
-cd "$(dirname "$0")/.."
 
 echo "## bootstrap ###################################################################"
 script/bootstrap
 
-if [ -z "$VENV_NAME" ]; then
-    VENV_NAME="env"
-fi
-
-. "$VENV_NAME/bin/activate"
+# Get current script path
+SCRIPT_PATH="$( dirname -- "$( readlink -f -- "${0}"; )"; )"
+# Activate OctoDNS Python venv
+source "${SCRIPT_PATH}/common.sh"
 
 echo "## environment & versions ######################################################"
 python --version
