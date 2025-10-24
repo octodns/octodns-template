@@ -1,4 +1,5 @@
 #!/bin/sh
+"${SCRIPT_PATH}/changelog" check
 
 set -e
 
