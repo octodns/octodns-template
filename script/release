@@ -20,7 +20,7 @@ EndOfMessage
     exit 1
 fi
 
-VERSION="$(grep "^__version__" "$ROOT/{MODULE}/__init__.py" | sed -e "s/.* = '//" -e "s/'$//")"
+VERSION="$(grep "^__version__" "{MODULE}/__init__.py" | sed -e "s/.* = '//" -e "s/'$//")"
 
 git tag -s "v$VERSION" -m "Release $VERSION"
 git push origin "v$VERSION"
