@@ -24,7 +24,7 @@ echo "tempdir: $TDIR"
 echo "## template vars ###############################################################"
 MODULE=$(basename "$MDIR" | sed 's/-/_/')
 echo "module: $MODULE"
-PROVIDER=$(grep --no-filename -r '^class .*\(Provider\|Source\)(' "$MDIR/$MODULE/" | sed -e 's/class //' -e 's/(.*//')
+PROVIDER=$(grep --no-filename -r '^class .*\(Provider\|Source\)(' "$MDIR/$MODULE/" | sed -e 's/class //' -e 's/(.*//' | head -n 1 || echo "Unknown")
 echo "provider: $PROVIDER"
 NAME=$(head -n 1 $MDIR/README.md | sed -e 's/## //' -e 's/ provider.*//')
 echo "name: $NAME"
@@ -38,19 +38,44 @@ echo "author_email: $AUTHOR_EMAIL"
 cd $TDIR
 
 $ROOT/script/template \
-  --module "$MODULE" \
-  --provider "$PROVIDER" \
-  --name "$NAME" \
-  --link "$LINK" \
-  --author "$AUTHOR" \
-  --author-email "$AUTHOR_EMAIL"
+    --module "$MODULE" \
+    --provider "$PROVIDER" \
+    --name "$NAME" \
+    --link "$LINK" \
+    --author "$AUTHOR" \
+    --author-email "$AUTHOR_EMAIL"
 
-diff \
-  -ru \
-  --ignore-matching-lines='TODO' \
-  --exclude=$MODULE \
-  --exclude=CHANGELOG.md \
-  --exclude=README.md \
-  --exclude=requirements*.txt \
-  --exclude=tests* \
-  . $MDIR
+FILES=$(
+    find -type f |
+        grep -v "$MODULE" |
+        grep -v tests |
+        grep -v 'README.md' |
+        grep -v 'CHANGELOG.md' |
+        grep -v 'requirements' |
+        sed -E 's#\.\/##'
+)
+for file in $FILES; do
+    DIFF=$(diff -u "${MDIR}/${file}" "$file" || true)
+    # if there are subtractions or if there are additions that aren't exports
+    if echo "$DIFF" | grep -q '^-' || echo "$DIFF" | grep -q '^+' | grep -qv '^+export '; then
+        echo "$DIFF"
+
+        # Ask if user wants to patch the file
+        read -p "Would you like to try and patch ${file}? (y/n) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            if echo "$DIFF" | patch -p0 "${MDIR}/${file}"; then
+                echo "Successfully patched ${file}"
+            else
+                echo "Failed to patch ${file}"
+            fi
+        fi
+
+        # Ask if user wants to edit the file
+        read -p "Would you like to edit ${file}? (y/n) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            ${EDITOR:-vi} "${MDIR}/${file}"
+        fi
+    fi
+done
