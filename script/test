@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Get current script path
 SCRIPT_PATH="$( dirname -- "$( readlink -f -- "${0}"; )"; )"

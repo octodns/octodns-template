@@ -45,4 +45,12 @@ $ROOT/script/template \
   --author "$AUTHOR" \
   --author-email "$AUTHOR_EMAIL"
 
-diff -ru --ignore-matching-lines='TODO' --exclude=$MODULE --exclude=tests* . $MDIR
+diff \
+  -ru \
+  --ignore-matching-lines='TODO' \
+  --exclude=$MODULE \
+  --exclude=CHANGELOG.md \
+  --exclude=README.md \
+  --exclude=requirements*.txt \
+  --exclude=tests* \
+  . $MDIR
