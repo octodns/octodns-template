@@ -3,6 +3,7 @@
 from argparse import ArgumentParser
 from os import chmod, mkdir, stat, walk
 from os.path import dirname, join
+from subprocess import PIPE, CalledProcessError, check_output
 from sys import argv
 
 SPECIAL_HIDDEN = {'.git_hooks_pre-commit', '.github', '.gitignore'}
@@ -47,18 +48,29 @@ parser.add_argument(
     help='Link to information about the provider, e.g. '
     '[https://www.something.com/docs/api]',
 )
+
+
+def _try_git_config(value):
+    try:
+        output = check_output(('git', 'config', value), stderr=PIPE)
+        return {'default': output.decode('utf-8').strip()}
+    except (FileNotFoundError, CalledProcessError):
+        return {'required': True}
+
+
 parser.add_argument(
     '--author',
     type=str,
-    required=True,
-    help="octoDNS module author's name, e.g. Ross McFarland",
+    help="octoDNS module author's name, e.g. Ross McFarland, defaults to `git config user.name`",
+    **_try_git_config('user.name')
 )
 parser.add_argument(
     '--author-email',
     type=str,
-    required=True,
-    help="octoDNS module author's email, e.g. " 'rwmcfa1@gmail.com',
+    help="octoDNS module author's email, e.g. rwmcfa1@gmail.com, defaults to `git config user.email`",
+    **_try_git_config('user.email')
 )
+
 options = parser.parse_args()
 options.module_dashed = options.module.replace('_', '-')
 options.module_stripped = options.module.replace('octodns_', '')
