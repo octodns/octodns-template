@@ -38,10 +38,11 @@ setup(
             # likely to result in formatting changes that should happen in their
             # own PR. This will basically happen yearly
             # https://black.readthedocs.io/en/stable/the_black_code_style/index.html#stability-policy
-            'black>=24.3.0,<25.0.0',
+            'black>=25.0.0,<26.0.0',
             'build>=0.7.0',
             'changelet',
             'isort>=5.11.5',
+            'proviso',
             'pyflakes>=2.2.0',
             'readme_renderer[md]>=26.0',
             'twine>=3.4.2',
