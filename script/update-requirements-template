@@ -1,6 +1,9 @@
 #!/bin/bash
 
-set -e
+# Get current script path
+SCRIPT_PATH="$(dirname -- "$(readlink -f -- "${0}")")"
+# Activate OctoDNS Python venv
+source "${SCRIPT_PATH}/common.sh"
 
 ROOT=$(dirname $(dirname $0))
 
@@ -13,7 +16,7 @@ TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
 # Write setup.py to temporary directory
-cat << EOF > "$TEMP_DIR/setup.py"
+cat <<EOF >"$TEMP_DIR/setup.py"
 from setuptools import setup
 
 setup(
@@ -30,3 +33,4 @@ EOF
 proviso --directory="$TEMP_DIR" --header="# TODO: Run ./script/update-requirements once setup.py is complete" "$@"
 
 mv "${TEMP_DIR}/requirements.txt" "${ROOT}/requirements.txt"
+
