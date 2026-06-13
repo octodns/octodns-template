@@ -58,7 +58,7 @@ setup(
     long_description_content_type='text/markdown',
     name='{MODULE_DASHED}',
     packages=find_packages(),
-    python_requires='>=3.9',
+    python_requires='>=3.10',
     tests_require=tests_require,
     url='https://github.com/octodns/{MODULE_DASHED}',
     version=version(),
