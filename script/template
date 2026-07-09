@@ -11,7 +11,7 @@ SPECIAL_IGNORE = {
     'env',
     'script/changelog-template',
     'script/cibuild-template',
-    'script/cibuild-setup-py-template',
+    'script/cibuild-package-template',
     'script/look-for-changes',
     'script/template',
     'script/update-requirements-template',
@@ -62,13 +62,13 @@ parser.add_argument(
     '--author',
     type=str,
     help="octoDNS module author's name, e.g. Ross McFarland, defaults to `git config user.name`",
-    **_try_git_config('user.name')
+    **_try_git_config('user.name'),
 )
 parser.add_argument(
     '--author-email',
     type=str,
     help="octoDNS module author's email, e.g. rwmcfa1@gmail.com, defaults to `git config user.email`",
-    **_try_git_config('user.email')
+    **_try_git_config('user.email'),
 )
 
 options = parser.parse_args()
@@ -92,8 +92,7 @@ def copy(source, target):
             .replace('./script/changelog-template', './script/changelog')
             .replace('./script/cibuild-template', './script/cibuild')
             .replace(
-                './script/cibuild-setup-py-template',
-                './script/cibuild-setup-py',
+                './script/cibuild-package-template', './script/cibuild-package'
             )
         )
         # special case to switch from the template ci to the real one ^

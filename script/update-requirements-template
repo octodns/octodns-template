@@ -7,30 +7,50 @@ source "${SCRIPT_PATH}/common.sh"
 
 ROOT=$(dirname $(dirname $0))
 
-# find all the modules in our template setup.py, this isn't a perfect solution,
-# but it works well enough, until it doesn't...
-MODULES="$(grep "    '.*',$" setup.py | sed -E "s/ +'/'/;")"
-
 # Create temporary directory
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
-# Write setup.py to temporary directory
-cat <<EOF >"$TEMP_DIR/setup.py"
-from setuptools import setup
+# Read the dependencies from our template pyproject.toml and write a minimal
+# pyproject.toml to the temporary directory, this isn't a perfect solution,
+# but it works well enough, until it doesn't...
+python3 - "pyproject.toml" "$TEMP_DIR/pyproject.toml" <<'EOF'
+import sys
+import tomllib
 
-setup(
-    name='your-package-name',
-    version='0.0.1',
-    install_requires=[
-$MODULES
-    ],
-    python_requires='>=3.10',
-)
+source, target = sys.argv[1:3]
+with open(source, "rb") as fh:
+    project = tomllib.load(fh)["project"]
+
+# combine dependencies with all optional-dependencies (test, dev, ...) so
+# the dev/test tooling is included too, matching the old setup.py-grepping
+# behavior which didn't distinguish install_requires from extras_require
+dependencies = list(project.get("dependencies", ()))
+for extra_deps in project.get("optional-dependencies", {}).values():
+    for dep in extra_deps:
+        if dep not in dependencies:
+            dependencies.append(dep)
+
+deps_toml = "\n".join(f'    "{dep}",' for dep in dependencies)
+with open(target, "w") as fh:
+    fh.write(
+        f"""[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "your-package-name"
+version = "0.0.1"
+requires-python = ">=3.10"
+dependencies = [
+{deps_toml}
+]
+"""
+    )
 EOF
 
 # Run proviso on the temporary directory
-proviso --directory="$TEMP_DIR" --header="# TODO: Run ./script/update-requirements once setup.py is complete" "$@"
+proviso --directory="$TEMP_DIR" --header="# TODO: Run ./script/update-requirements once pyproject.toml is complete" "$@"
 
 mv "${TEMP_DIR}/requirements.txt" "${ROOT}/requirements.txt"
 

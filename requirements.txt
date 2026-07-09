@@ -1,4 +1,4 @@
-# TODO: Run ./script/update-requirements once setup.py is complete
+# TODO: Run ./script/update-requirements once pyproject.toml is complete
 x-python-version-not-supported; python_version!='3.10' and python_version!='3.11' and python_version!='3.12' and python_version!='3.13' and python_version!='3.14'
 anyio==4.14.0
 backports-tarfile==1.2.0; python_version=='3.10' or python_version=='3.11'
