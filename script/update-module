@@ -30,9 +30,9 @@ NAME=$(head -n 1 $MDIR/README.md | sed -e 's/## //' -e 's/ provider.*//')
 echo "name: $NAME"
 LINK=$(grep 'provider that targets' $MDIR/README.md | sed -e 's/.*targets .*](//' -e 's/)\.$//' || echo "NoT-FoUnD")
 echo "link: $LINK"
-AUTHOR=$(grep 'author=' "$MDIR/setup.py" | sed -e "s/.*author='//" -e "s/',//")
+AUTHOR=$(python3 -c 'import tomllib, sys; a = tomllib.load(open(sys.argv[1], "rb"))["project"]["authors"][0]; print(a["name"])' "$MDIR/pyproject.toml")
 echo "author: $AUTHOR"
-AUTHOR_EMAIL=$(grep 'author_email=' "$MDIR/setup.py" | sed -e "s/.*author_email='//" -e "s/',//")
+AUTHOR_EMAIL=$(python3 -c 'import tomllib, sys; a = tomllib.load(open(sys.argv[1], "rb"))["project"]["authors"][0]; print(a["email"])' "$MDIR/pyproject.toml")
 echo "author_email: $AUTHOR_EMAIL"
 
 cd $TDIR
